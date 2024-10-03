@@ -12,14 +12,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/filme")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class Controller {
     @Autowired
     Repository repository;
 
     @GetMapping
-    public ResponseEntity<?> selcionaFilmes(){
+    public List<Dto> selcionaFilmes(){
         final List<Dto> listEmployee = repository.findAll();
-        return ResponseEntity.ok(listEmployee);
+        return listEmployee;
     }
 
     @GetMapping("/testaUsuario")
