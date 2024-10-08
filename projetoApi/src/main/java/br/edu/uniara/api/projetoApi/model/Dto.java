@@ -1,5 +1,6 @@
 package br.edu.uniara.api.projetoApi.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,8 +22,12 @@ public class Dto {
 
     private String tipo;
 
-    public Dto(String nome, String tipo) {
+    @Column(length = 10000)
+    private String imagem;
+
+    public Dto(String nome, String tipo, String imagem) {
         this.nome = nome;
         this.tipo = tipo;
+        this.imagem = imagem;
     }
 }

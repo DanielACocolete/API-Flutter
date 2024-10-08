@@ -1,8 +1,6 @@
 package br.edu.uniara.api.projetoApi.controller;
 
-import br.edu.uniara.api.projetoApi.model.Dto;
-import br.edu.uniara.api.projetoApi.model.DtoUsuario;
-import br.edu.uniara.api.projetoApi.model.Repository;
+import br.edu.uniara.api.projetoApi.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,26 +15,50 @@ public class Controller {
     @Autowired
     Repository repository;
 
+    @Autowired
+    RepositoryCompras repositoryCompras;
+
+    @Autowired
+    RepositoryUsuario repositoryUsuario;
+
     @GetMapping
     public List<Dto> selcionaFilmes(){
-        final List<Dto> listEmployee = repository.findAll();
-        return listEmployee;
+        final List<Dto> listaFilmes = repository.findAll();
+        return listaFilmes;
     }
 
-    @GetMapping("/testaUsuario")
-    public ResponseEntity<String> selcionaFilmes(@RequestParam String usuario, @RequestParam String senha){
-        if(usuario.equals("Daniel") && senha.equals("123")){
-            return ResponseEntity.ok("Usuário autenticado com sucesso!");
+    @GetMapping("/historicoCompras")
+    public List<DtoCompraIngresso> getHistoricoCompras(){
+        final List<DtoCompraIngresso> listaHistoricoCompras = repositoryCompras.findAll();
+        return listaHistoricoCompras;
+    }
+
+    @GetMapping("/testaUsuario/{usuario}/{senha}")
+    public ResponseEntity<String> selecionaFilmes(@PathVariable String usuario, @PathVariable String senha) {
+        final List<DtoUsuario> listaUsuarios = repositoryUsuario.findAll();
+
+        for (DtoUsuario usuarioAtual : listaUsuarios) {
+            if (usuarioAtual.getNome().equals(usuario) && usuarioAtual.getSenha().equals(senha)) {
+                return ResponseEntity.ok("Usuário autenticado com sucesso!");
+            }
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos.");
     }
 
-    @PostMapping
-    public ResponseEntity<Dto> insereFilme(
-            @RequestBody Dto filme
+    @PostMapping("/cadastraUsuario")
+    public ResponseEntity<DtoUsuario> cadastraUsuario(
+            @RequestBody DtoUsuario usuario
     ) {
-        var filmeSalvo = repository.save(filme);
+        var usuarioSalvo = repositoryUsuario.save(usuario);
+        return ResponseEntity.ok(usuarioSalvo);
+    }
+
+    @PostMapping
+    public ResponseEntity<DtoCompraIngresso> insereCompraFilme(
+            @RequestBody DtoCompraIngresso filme
+    ) {
+        var filmeSalvo = repositoryCompras.save(filme);
         return ResponseEntity.ok(filmeSalvo);
     }
 
@@ -60,11 +82,11 @@ public class Controller {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletaFilmes(@PathVariable Long id) {
-        boolean filmeExistente = repository.existsById(id);
+        boolean filmeExistente = repositoryCompras.existsById(id);
         if (!filmeExistente) {
             return ResponseEntity.notFound().build();
         }
-        repository.deleteById(id);
+        repositoryCompras.deleteById(id);
         return ResponseEntity.ok(id + "was removed");
     }
 }

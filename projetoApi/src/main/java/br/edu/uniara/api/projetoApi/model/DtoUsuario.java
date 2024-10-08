@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+@Entity
+@NoArgsConstructor
 @Getter
 @Setter
 public class DtoUsuario {
@@ -18,6 +20,22 @@ public class DtoUsuario {
     private String nome;
 
     private String senha;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
     public DtoUsuario(String nome, String senha) {
         this.nome = nome;
