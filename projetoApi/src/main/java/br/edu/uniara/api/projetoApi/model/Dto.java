@@ -22,12 +22,15 @@ public class Dto {
 
     private String tipo;
 
+    private String preco;
+
     @Column(length = 10000)
     private String imagem;
 
-    public Dto(String nome, String tipo, String imagem) {
+    public Dto(String nome, String tipo, String preco, String imagem) {
         this.nome = nome;
         this.tipo = tipo;
+        this.preco = preco;
         this.imagem = imagem;
     }
 }

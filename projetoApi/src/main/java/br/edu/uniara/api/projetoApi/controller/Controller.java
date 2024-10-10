@@ -34,7 +34,7 @@ public class Controller {
     }
 
     @GetMapping("/testaUsuario/{usuario}/{senha}")
-    public ResponseEntity<String> selecionaFilmes(@PathVariable String usuario, @PathVariable String senha) {
+    public ResponseEntity<String> testarUsuario(@PathVariable String usuario, @PathVariable String senha) {
         final List<DtoUsuario> listaUsuarios = repositoryUsuario.findAll();
 
         for (DtoUsuario usuarioAtual : listaUsuarios) {
